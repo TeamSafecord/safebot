@@ -1,59 +1,61 @@
-import { Client, Collection } from 'discord.js'
-import * as fs from 'fs'
-import path from 'path'
-import SlashCommand from './SlashCommand'
+import {Client, Collection} from "discord.js";
+import * as fs from "fs";
+import path from "path";
+import SlashCommand from "./SlashCommand";
 
 export default class CommandHandler {
-    constructor(public client: Client) {}
+  constructor(public client: Client) {}
 
-    public commands = new Collection<string, SlashCommand>()
+  public commands = new Collection<string, SlashCommand>();
 
-    public init(input: string) {
-        const filePaths = CommandHandler.readdirRecursive(input)
+  public init(input: string) {
+    const filePaths = CommandHandler.readdirRecursive(input);
 
-        for (const filePath of filePaths) {
-            const file = require(path.resolve(filePath))
+    for (const filePath of filePaths) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const file = require(path.resolve(filePath));
+      // eslint-disable-next-line new-cap
+      const command: SlashCommand = new file.default();
+      command.client = this.client;
+      command.handler = this;
 
-            const command: SlashCommand = new file.default()
-            command.client = this.client
-            command.handler = this
+      this.commands.set(command.name, command);
+    }
 
-            this.commands.set(command.name, command)
+    this.setup();
+  }
+
+  public setup() {
+    this.client.on("interactionCreate", (i) => {
+      if (i.isCommand()) {
+        const cmd = this.commands.get(i.commandName);
+        if (!cmd) {
+          throw new Error(
+              `Unregistered command (${i.commandName}) found!`
+          );
         }
+        cmd.exec(i);
+      }
+    });
+  }
 
-        this.setup()
-    }
-
-    public setup() {
-        this.client.on('interactionCreate', (i) => {
-            if (i.isCommand()) {
-                const cmd = this.commands.get(i.commandName)
-                if (!cmd)
-                    throw new Error(
-                        `Unregistered command (${i.commandName}) found!`
-                    )
-                cmd.exec(i)
-            }
-        })
-    }
-
-    private static readdirRecursive(directory: string): string[] {
-        const result = []
+  private static readdirRecursive(directory: string): string[] {
+    const result = []
 
         ;(function read(dir) {
-            const files = fs.readdirSync(dir)
+      const files = fs.readdirSync(dir);
 
-            for (const file of files) {
-                const filepath = path.join(dir, file)
+      for (const file of files) {
+        const filepath = path.join(dir, file);
 
-                if (fs.statSync(filepath).isDirectory()) {
-                    read(filepath)
-                } else {
-                    result.push(filepath)
-                }
-            }
-        })(directory)
+        if (fs.statSync(filepath).isDirectory()) {
+          read(filepath);
+        } else {
+          result.push(filepath);
+        }
+      }
+    })(directory);
 
-        return result
-    }
+    return result;
+  }
 }

@@ -1,46 +1,48 @@
-import { CommandInteraction, MessageAttachment } from 'discord.js'
-import SlashCommand from '../SlashCommand'
-import fetch from 'node-fetch'
+import {CommandInteraction, MessageAttachment} from "discord.js";
+import SlashCommand from "../SlashCommand";
+import fetch from "node-fetch";
 
-interface captchaResponse {
+interface ICaptchaResponse {
+    statusCode: 200 | 500
     data: {
-        captcha: string
-        captchaImg: any // TODO: Fix this nick
+        captchaBuffer: { type: string, data: Array<Buffer> }
+        captchaText: string
     }
 }
 
 async function getCaptcha(diff: number) {
-    try {
-        const res = await fetch(`https://api.safecord.xyz/gen/captcha`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                difficulty: diff,
-            }),
-        })
+  try {
+    const res = await fetch("https://api.safecord.xyz/gen/captcha", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        difficulty: diff,
+      }),
+    });
 
-        const json: any = await res.json() // user interface captchaResponse (i cant get it to work)
+    const json = await res.json() as ICaptchaResponse;
 
-        const attachment = new MessageAttachment(
-            Buffer.from(json.data.captchaImg, 'utf-8'),
-            'captcha.png'
-        )
-        return attachment
-    } catch (error) {
-        console.log(error)
-    }
+    const attachment = new MessageAttachment(
+        Buffer.from(json.data.captchaText, "utf-8"),
+        "captcha.png"
+    );
+    return attachment;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-export default class PingCommand extends SlashCommand {
-    constructor() {
-        super('captchatest', 'Sends a test captcha!')
-    }
+export default class CaptchaTest extends SlashCommand {
+  constructor() {
+    super("captchatest", "Sends a test captcha!");
+  }
 
-    public async exec(i: CommandInteraction) {
-        this.embed.setImage('attachment://captcha.png')
-        this.embed.setTitle('Captcha Test')
-        i.reply({ files: [await getCaptcha(5)], embeds: [this.embed] })
-    }
+  public async exec(i: CommandInteraction) {
+    const image = await getCaptcha(5);
+    this.embed.setImage("attachment://captcha.png");
+    this.embed.setTitle("Captcha Test");
+    i.reply({files: [image], embeds: [this.embed]});
+  }
 }
