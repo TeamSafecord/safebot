@@ -18,10 +18,10 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: TeamSafecord
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push SafeBot to GHCR
         run: |
-          docker build . --tag ghcr.io/TeamSafecord/safebot:latest
-          docker push ghcr.io/TeamSafecord/safebot:latest
+          docker build . --tag ghcr.io/teamsafecord/safebot:latest
+          docker push ghcr.io/teamsafecord/safebot:latest
