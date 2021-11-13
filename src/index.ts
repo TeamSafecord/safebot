@@ -21,9 +21,6 @@ client.on("ready", () => {
 client.on("messageCreate", async m => {
     if (!client.application.owner) await client.application.fetch();
     const owner = client.application.owner;
-
-    const args = m.content.split(/ +/);
-
     const regex = new RegExp(`^<@!?${client.user.id}> deploy`)
 
     if (owner instanceof Team) {
