@@ -2,12 +2,14 @@
   "scripts": {
     "watch": "tsc -w",
     "build": "tsc && copyfiles .env package.json yarn.lock dist",
+    "tristan": "tsc && cd ./dist/ && node index.js",
     "docker": "rm -rf ./dist/ && tsc && cd ./dist/ && pm2-runtime start index.js"
   },
   "dependencies": {
     "copyfiles": "^2.4.1",
     "discord.js": "^13.3.1",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "node-fetch": "^3.1.0"
   },
   "devDependencies": {
     "@types/node": "^16.11.7",
