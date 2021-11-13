@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 COPY package*.json ./
-RUN npm install yarn -g
+RUN npm install --global yarn
 RUN yarn
 RUN npm install pm2 -g
 RUN npm install -g typescript
