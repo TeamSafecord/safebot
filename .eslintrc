@@ -14,7 +14,10 @@
 		"@typescript-eslint/no-unused-vars": "off",
 		// Qol
 		"max-len": ["error", { "code": 200 }],
-        // Fuck you neko
-        "quotes": ["error", "double"]
+		"quotes": "off",
+		// terrible opinion, google
+		"object-curly-spacing": "off",
+		// just why
+		"@typescript-eslint/no-empty-function": "off"
 	}
 }

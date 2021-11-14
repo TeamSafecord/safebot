@@ -3,6 +3,7 @@
     "watch": "tsc -w",
     "build": "tsc && copyfiles .env package.json yarn.lock dist",
     "tristan": "tsc && cd ./dist/ && node index.js",
+    "start": "cd ./dist/ && node .",
     "docker": "rm -rf ./dist/ && tsc && cd ./dist/ && pm2-runtime start index.js"
   },
   "dependencies": {
