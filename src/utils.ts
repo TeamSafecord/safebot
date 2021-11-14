@@ -1,4 +1,4 @@
-// We extend null so it removes some needed thing from the object like prototypes
+// We extend null so it removes some unnecessary things from the class like protyping. This class should only have static methods.
 
 import {CommandInteraction} from "discord.js";
 
