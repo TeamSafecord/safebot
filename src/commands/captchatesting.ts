@@ -36,11 +36,16 @@ async function getCaptcha(diff: number) {
 
 export default class CaptchaTest extends SlashCommand {
   constructor() {
-    super("captchatest", "Sends a test captcha!");
+    super("captchatest", "Sends a test captcha!", [{
+      name: "difficulty",
+      description: "Amount of characters to add",
+      type: "INTEGER",
+      required: true,
+    }]);
   }
 
   public async exec(i: CommandInteraction) {
-    const image = await getCaptcha(5);
+    const image = await getCaptcha(i.options.getInteger("difficulty", true));
     this.embed.setImage("attachment://captcha.png");
     this.embed.setTitle("Captcha Test");
     i.reply({files: [image], embeds: [this.embed]});
