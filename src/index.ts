@@ -1,11 +1,12 @@
 import {ApplicationCommandData, Client, Team} from "discord.js";
 import CommandHandler from "./CommandHandler";
 import SlashCommand from "./SlashCommand";
+import {setupServer} from "./server";
 
 import {config} from "dotenv";
 config();
 
-const client = new Client({intents: ["GUILD_MESSAGES", "GUILDS"]});
+export const client = new Client({intents: ["GUILD_MESSAGES", "GUILDS"]});
 
 let cmds: SlashCommand[];
 
@@ -16,6 +17,8 @@ client.on("ready", () => {
   cmd.init("./commands/");
 
   cmds = cmd.commands.map((c) => c);
+
+  setupServer(1337);
 });
 
 client.on("messageCreate", async (m) => {
