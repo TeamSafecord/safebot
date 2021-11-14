@@ -1,4 +1,4 @@
-import {CommandInteraction, MessageAttachment} from "discord.js";
+import {CommandInteraction, EmbedFieldData, MessageAttachment} from "discord.js";
 import SlashCommand from "../SlashCommand";
 import fetch from "node-fetch";
 
@@ -50,10 +50,11 @@ export default class CaptchaTest extends SlashCommand {
     const cResult = await getCaptcha(i.options.getInteger("difficulty", true));
     this.embed.setImage("attachment://captcha.png");
     this.embed.setTitle("Captcha Test");
-    this.embed.addField(
-      "Easier Captcha (use this if you have a vison problem only!",
-      cResult.captcha,
-    );
+    const fields: EmbedFieldData = {
+      name: "Easier Captcha (use this if you have a vison problem only!",
+      value: cResult.captcha.toString(),
+    };
+    this.embed.setFields(fields);
     i.reply({files: [cResult.attach], embeds: [this.embed]});
   }
 }
