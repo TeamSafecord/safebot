@@ -4,7 +4,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/node@16.6
     - name: Install Eslint
       run: yarn add eslint
     - name: Run ESLint
