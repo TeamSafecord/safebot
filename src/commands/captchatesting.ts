@@ -5,7 +5,7 @@ import fetch from "node-fetch";
 interface ICaptchaResponse {
     statusCode: 200 | 500
     data: {
-        captchaBuffer: { type: string, data: Array<Buffer> }
+        captchaBuffer: Buffer
         captchaText: string
     }
 }
@@ -25,7 +25,7 @@ async function getCaptcha(diff: number) {
     const json = await res.json() as ICaptchaResponse;
 
     const attachment = new MessageAttachment(
-        Buffer.from(json.data.captchaText, "utf-8"),
+        Buffer.from(json.data.captchaBuffer),
         "captcha.png"
     );
     return attachment;
