@@ -3,11 +3,11 @@ import SlashCommand from "../SlashCommand";
 import fetch from "node-fetch";
 
 interface ICaptchaResponse {
-    statusCode: 200 | 500
-    data: {
-        captchaBuffer: Buffer
-        captchaText: string
-    }
+  statusCode: 200 | 500;
+  data: {
+    captchaBuffer: Buffer;
+    captchaText: string;
+  };
 }
 
 async function getCaptcha(diff: number) {
@@ -22,13 +22,13 @@ async function getCaptcha(diff: number) {
       }),
     });
 
-    const json = await res.json() as ICaptchaResponse;
+    const json = (await res.json()) as ICaptchaResponse;
 
-    const attachment = new MessageAttachment(
-        Buffer.from(json.data.captchaBuffer),
-        "captcha.png"
-    );
-    return attachment;
+    const result = {
+      attach: new MessageAttachment(Buffer.from(json.data.captchaBuffer), "captcha.png"),
+      captcha: json.data.captchaText,
+    };
+    return result;
   } catch (error) {
     console.log(error);
   }
@@ -36,18 +36,24 @@ async function getCaptcha(diff: number) {
 
 export default class CaptchaTest extends SlashCommand {
   constructor() {
-    super("captchatest", "Sends a test captcha!", [{
-      name: "difficulty",
-      description: "Amount of characters to add",
-      type: "INTEGER",
-      required: true,
-    }]);
+    super("captchatest", "Sends a test captcha!", [
+      {
+        name: "difficulty",
+        description: "Amount of characters to add",
+        type: "INTEGER",
+        required: true,
+      },
+    ]);
   }
 
   public async exec(i: CommandInteraction) {
-    const image = await getCaptcha(i.options.getInteger("difficulty", true));
+    const cResult = await getCaptcha(i.options.getInteger("difficulty", true));
     this.embed.setImage("attachment://captcha.png");
     this.embed.setTitle("Captcha Test");
-    i.reply({files: [image], embeds: [this.embed]});
+    this.embed.addField(
+      "Easier Captcha (use this if you have a vison problem only!",
+      cResult.captcha,
+    );
+    i.reply({files: [cResult.attach], embeds: [this.embed]});
   }
 }
