@@ -1,5 +1,4 @@
 import {FastifyInstance} from "fastify";
-import {client} from "../../index";
 
 interface addRoleBody {
   guild_id: string;
@@ -38,7 +37,7 @@ export default async (fastify: FastifyInstance) => {
         const {guild_id, role_id, user_id} = request.body;
 
         // Fetching incase bot is sharded
-        const guild = await client.guilds.fetch(guild_id).catch(() => null);
+        const guild = await fastify.client.guilds.fetch(guild_id).catch(() => null);
 
         if (!guild) {
           return reply.code(400).send({statusCode: 400, message: "Guild not found"});

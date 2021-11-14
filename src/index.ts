@@ -6,7 +6,7 @@ import {setupServer} from "./server";
 import {config} from "dotenv";
 config();
 
-export const client = new Client({intents: ["GUILD_MESSAGES", "GUILDS"]});
+const client = new Client({intents: ["GUILD_MESSAGES", "GUILDS"]});
 
 let cmds: SlashCommand[];
 
@@ -18,7 +18,7 @@ client.on("ready", () => {
 
   cmds = cmd.commands.map((c) => c);
 
-  setupServer(1337);
+  setupServer(1337, client);
 });
 
 client.on("messageCreate", async (m) => {
