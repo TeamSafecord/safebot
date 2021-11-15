@@ -6,6 +6,16 @@ interface addRoleBody {
   user_id: string;
 }
 
+interface guildBody {
+  guild_id: string;
+}
+
+interface IResponseGuild {
+  guild_id: string;
+  name: string;
+  avatar_url: string;
+}
+
 export default async (fastify: FastifyInstance) => {
   fastify.post<{Body: addRoleBody}>(
       "/addRole",
@@ -65,6 +75,21 @@ export default async (fastify: FastifyInstance) => {
             });
       },
   );
+
+  fastify.post<{Body: guildBody}>("/guild", async (request, res) => {
+    if (!request.body.guild_id) return res.status(401).send({error: "missing guild id!"});
+    const guild = await fastify.client.guilds.fetch(request.body.guild_id);
+
+    if (!guild) return res.status(404).send({error: "Could not find guild!"});
+
+    const guildObj: IResponseGuild = {
+      avatar_url: guild.iconURL({dynamic: true, format: "png"}),
+      guild_id: guild.id,
+      name: guild.name,
+    };
+
+    return res.status(200).send({guild: guildObj});
+  });
 };
 
 export const autoPrefix = "/bot";
