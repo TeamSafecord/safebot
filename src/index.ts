@@ -2,7 +2,6 @@ import {ApplicationCommandData, Client, Team} from "discord.js";
 import CommandHandler from "./CommandHandler";
 import SlashCommand from "./SlashCommand";
 import {setupServer} from "./server";
-
 import {config} from "dotenv";
 import axios from "axios";
 config();
