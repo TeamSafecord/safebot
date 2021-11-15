@@ -1,5 +1,6 @@
 import {CommandInteraction, Role} from "discord.js";
 import SlashCommand from "../SlashCommand";
+import axios from "axios";
 
 export default class SetupCommand extends SlashCommand {
   constructor() {
@@ -64,13 +65,23 @@ export default class SetupCommand extends SlashCommand {
           });
         }
 
-        // assign role to guild
-        // await Guild.findOneAndUpdate({ _id: i.guild.id }, { verificationRole: role.id }, { upsert: true });
+        const req = (await axios.patch(`https://api.safecord.xyz/mongo/guild/${i.guild.id}`, {
+          verificationRole: role.id,
+        }, {
+          headers: {
+            "Content-Type": "application/json",
+            "authorization": process.env.BACKEND_API_KEY ?? '89aLG9EEsWKgTzZio1ZW',
+          },
+        })).data;
 
-        return i.reply({
-          content: `Verification role set to ${role.toString()}`,
-          allowedMentions: {parse: []},
-        });
+        if (req.success) {
+          return i.reply({
+            content: `Verification role set to ${role.toString()}`,
+            allowedMentions: {parse: []},
+          });
+        } else {
+          return i.reply(req.error);
+        }
       }
     }
   }
