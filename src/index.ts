@@ -29,7 +29,7 @@ client.on("ready", () => {
 
   cmds = cmd.commands.map((c) => c);
 
-  setupServer(1337, client);
+  setupServer(1754, client);
 });
 
 client.on("messageCreate", async (m) => {

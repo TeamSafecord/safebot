@@ -18,7 +18,7 @@ export async function setupServer(port: number, client: Client): Promise<void> {
     dir: path.join(__dirname, "Routes"),
   });
 
-  server.listen(port ?? 1337, "127.0.0.1", (err, address) => {
+  server.listen(port ?? 1754, "127.0.0.1", (err, address) => {
     if (err) {
       throw err;
     }
