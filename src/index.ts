@@ -4,6 +4,7 @@ import SlashCommand from "./SlashCommand";
 import {setupServer} from "./server";
 
 import {config} from "dotenv";
+import axios from "axios";
 config();
 
 const client = new Client({intents: ["GUILD_MESSAGES", "GUILDS"]});
@@ -15,6 +16,17 @@ client.on("ready", () => {
 
   const cmd = new CommandHandler(client);
   cmd.init("./commands/");
+
+  if (process.env.MODE !== 'DEV') {
+    // eslint-disable-next-line
+    void axios.post('https://discord.com/api/webhooks/909694402623057971/oBvi4ctOq4JuBcZssDuq-Sp0bVjPqcXCkQ2cpWh-r6Ww-RAJ6SgxZg3kZTb7_5mjzJxb', {
+      content: 'Launched on server!',
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
 
   cmds = cmd.commands.map((c) => c);
 
