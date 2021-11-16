@@ -11,9 +11,9 @@ export default class SlashCommand {
   public client: Client;
   public handler: CommandHandler;
   public embed = new MessageEmbed()
-      .setColor("#23272A")
-      .setTimestamp()
-      .setFooter("Safecord", "https://cdn.discordapp.com/icons/908908168682299413/9557cf6b14e724869efd0ad7f74af811.webp?size=96"); // TODO: Update icon
+    .setColor("#23272A")
+    .setTimestamp()
+    .setFooter("Safecord", "https://www.safecord.xyz/s.png");
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public exec(i: CommandInteraction) {}
