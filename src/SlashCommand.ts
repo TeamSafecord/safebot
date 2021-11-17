@@ -11,9 +11,9 @@ export default class SlashCommand {
   public client: Client;
   public handler: CommandHandler;
   public embed = new MessageEmbed()
-    .setColor("#23272A")
-    .setTimestamp()
-    .setFooter("Safecord", "https://www.safecord.xyz/s.png");
+      .setColor("#23272A")
+      .setTimestamp()
+      .setFooter("Safecord", "https://www.safecord.xyz/s.png");
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public exec(i: CommandInteraction) {}

@@ -17,17 +17,16 @@ client.on("ready", () => {
   cmd.init("./commands/");
 
   if (process.env.MODE !== "DEV") {
-    // eslint-disable-next-line
     void axios.post(
-      "https://discord.com/api/webhooks/909694402623057971/oBvi4ctOq4JuBcZssDuq-Sp0bVjPqcXCkQ2cpWh-r6Ww-RAJ6SgxZg3kZTb7_5mjzJxb",
-      {
-        content: "Launched on server!",
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+        "https://discord.com/api/webhooks/909694402623057971/oBvi4ctOq4JuBcZssDuq-Sp0bVjPqcXCkQ2cpWh-r6Ww-RAJ6SgxZg3kZTb7_5mjzJxb",
+        {
+          content: "Launched on server!",
         },
-      },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
     );
   }
 
