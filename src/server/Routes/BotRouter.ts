@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {FastifyInstance} from "fastify";
 
 interface addRoleBody {
@@ -14,6 +16,11 @@ interface IResponseGuild {
   guild_id: string;
   name: string;
   avatar_url: string;
+}
+
+interface getMemberBody {
+  guild_id: string;
+  member_id: string;
 }
 
 export default async (fastify: FastifyInstance) => {
@@ -43,7 +50,6 @@ export default async (fastify: FastifyInstance) => {
           return reply.code(401).send({statusCode: 401, message: "Unauthorized"});
         }
 
-        // eslint-disable-next-line camelcase -- I wanna be like discord
         const {guild_id, role_id, user_id} = request.body;
 
         // Fetching incase bot is sharded
@@ -67,7 +73,7 @@ export default async (fastify: FastifyInstance) => {
 
         console.log("================");
         console.log("Received Captcha");
-        console.log("================");
+        console.log("=======>=======");
 
         await console.log(
             // TODO: Remove once I test it actually works
@@ -84,7 +90,7 @@ export default async (fastify: FastifyInstance) => {
   );
 
   fastify.post<{Body: guildBody}>("/guild", async (request, res) => {
-    if (!request.body.guild_id) return res.status(401).send({error: "missing guild id!"});
+    if (!request.body.guild_id) return res.status(400).send({error: "missing guild id!"});
     const guild = await fastify.client.guilds.fetch(request.body.guild_id);
 
     if (!guild) return res.status(404).send({error: "Could not find guild!"});
@@ -96,6 +102,17 @@ export default async (fastify: FastifyInstance) => {
     };
 
     return res.status(200).send({guild: guildObj});
+  });
+
+  fastify.post<{Body: getMemberBody}>("/member", async (req, res) => {
+    if (!req.body.guild_id || !req.body.member_id) return res.status(400).send({error: "misisng guild id or member id!"});
+
+    const guild = await fastify.client.guilds.fetch(req.body.guild_id);
+    if (!guild) return res.status(404).send({error: "Could not find guild!"});
+
+    const member = await guild.members.fetch({user: req.body.member_id, force: true});
+    if (!member) return res.status(404).send({error: "Could not find member!"});
+    return res.status(200).send(member);
   });
 };
 
