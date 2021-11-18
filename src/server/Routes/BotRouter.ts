@@ -104,7 +104,7 @@ export default async (fastify: FastifyInstance) => {
     return res.status(200).send({guild: guildObj});
   });
 
-  fastify.post<{Body: getMemberBody}>("/member", async (req, res) => {
+  fastify.post<{Body: getMemberBody}>("/verified", async (req, res) => {
     if (!req.body.guild_id || !req.body.member_id) return res.status(400).send({error: "misisng guild id or member id!"});
 
     const guild = await fastify.client.guilds.fetch(req.body.guild_id);
@@ -112,7 +112,13 @@ export default async (fastify: FastifyInstance) => {
 
     const member = await guild.members.fetch({user: req.body.member_id, force: true});
     if (!member) return res.status(404).send({error: "Could not find member!"});
-    return res.status(200).send(member);
+
+    const guildObj: IResponseGuild = {
+      avatar_url: guild.iconURL({dynamic: true, format: "png"}),
+      guild_id: guild.id,
+      name: guild.name,
+    };
+    return res.status(200).send({member, guild: guildObj});
   });
 };
 
