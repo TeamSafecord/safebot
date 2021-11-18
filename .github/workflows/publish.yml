@@ -7,13 +7,13 @@ on:
     branches:
       - main
 
-eslint:
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v2
-    - uses: bradennapier/eslint-plus-action@v3.4.2
-
 jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bradennapier/eslint-plus-action@v3.4.2
+
   Build-and-Push-SafeBot-to-GHCR:
     runs-on: ubuntu-latest
 
