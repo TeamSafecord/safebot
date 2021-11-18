@@ -7,17 +7,18 @@ on:
     branches:
       - main
 
+eslint:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+    - uses: bradennapier/eslint-plus-action@v3.4.2
+
 jobs:
   Build-and-Push-SafeBot-to-GHCR:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Lint
-        uses: getsentry/action-eslint-fix@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
