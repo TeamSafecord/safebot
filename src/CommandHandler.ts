@@ -1,7 +1,7 @@
-import {Client, Collection} from "discord.js";
-import * as fs from "fs";
-import path from "path";
-import SlashCommand from "./SlashCommand";
+import { Client, Collection } from 'discord.js';
+import * as fs from 'fs';
+import path from 'path';
+import SlashCommand from './SlashCommand';
 
 export default class CommandHandler {
   constructor(public client: Client) {}
@@ -26,13 +26,11 @@ export default class CommandHandler {
   }
 
   public setup() {
-    this.client.on("interactionCreate", (i) => {
+    this.client.on('interactionCreate', (i) => {
       if (i.isCommand()) {
         const cmd = this.commands.get(i.commandName);
         if (!cmd) {
-          throw new Error(
-              `Unregistered command (${i.commandName}) found!`
-          );
+          throw new Error(`Unregistered command (${i.commandName}) found!`);
         }
         cmd.exec(i);
       }
@@ -40,9 +38,9 @@ export default class CommandHandler {
   }
 
   private static readdirRecursive(directory: string): string[] {
-    const result = []
+    const result = [];
 
-        ;(function read(dir) {
+    (function read(dir) {
       const files = fs.readdirSync(dir);
 
       for (const file of files) {
