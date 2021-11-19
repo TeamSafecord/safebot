@@ -35,8 +35,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name:
-
       - name: Build and Push SafeBot to GHCR
         run: |
           docker build . --tag ghcr.io/teamsafecord/safebot:latest
