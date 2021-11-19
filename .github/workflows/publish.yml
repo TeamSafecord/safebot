@@ -8,26 +8,34 @@ on:
       - main
 
 jobs:
-  Run-ESLint:
+  Build-and-Push-SafeBot-to-GHCR:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
           cache: 'yarn'
-      - uses: bradennapier/eslint-plus-action@v3.4.2
+        
+      - name: Lint
+        run: |
+          yarn install
+          yarn lint:fix
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "automate: lint"
+          git push
 
-  Build-and-Push-SafeBot-to-GHCR:
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Login to GitHub Container Registrys
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name:
 
       - name: Build and Push SafeBot to GHCR
         run: |
