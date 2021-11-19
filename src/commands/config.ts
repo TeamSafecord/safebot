@@ -1,19 +1,19 @@
-import { CommandInteraction, Role, MessageActionRow, MessageButton, Message } from 'discord.js';
-import SlashCommand from '../SlashCommand';
-import axios from 'axios';
+import { CommandInteraction, Role, MessageActionRow, MessageButton, Message } from "discord.js";
+import SlashCommand from "../SlashCommand";
+import axios from "axios";
 
 export default class SetupCommand extends SlashCommand {
   constructor() {
-    super('config', 'Update your server config!', [
+    super("config", "Update your server config!", [
       {
-        type: 'SUB_COMMAND',
-        name: 'verify_role',
-        description: 'Change the role given after user completes verification',
+        type: "SUB_COMMAND",
+        name: "verify_role",
+        description: "Change the role given after user completes verification",
         options: [
           {
-            type: 'ROLE',
-            name: 'role',
-            description: 'Role to apply when verifying',
+            type: "ROLE",
+            name: "role",
+            description: "Role to apply when verifying",
             required: true,
           },
         ],
@@ -23,23 +23,23 @@ export default class SetupCommand extends SlashCommand {
 
   public async exec(int: CommandInteraction) {
     switch (int.options.getSubcommand()) {
-      case 'verify_role': {
-        const role = int.options.getRole('role', true);
+      case "verify_role": {
+        const role = int.options.getRole("role", true);
 
         if (!(role instanceof Role)) {
-          return int.reply('Required scope `bot` is missing., Re-add me with the scope and try again');
+          return int.reply("Required scope `bot` is missing., Re-add me with the scope and try again");
         }
 
         const botRoles = int.guild.me.roles;
         const disallowedPermissions = [
-          'ADMINISTRATOR',
-          'KICK_MEMBERS',
-          'BAN_MEMBERS',
-          'MANAGE_CHANNELS',
-          'MANAGE_GUILD',
-          'MANAGE_MESSAGES',
-          'MENTION_EVERYONE',
-          'MANAGE_ROLES',
+          "ADMINISTRATOR",
+          "KICK_MEMBERS",
+          "BAN_MEMBERS",
+          "MANAGE_CHANNELS",
+          "MANAGE_GUILD",
+          "MANAGE_MESSAGES",
+          "MENTION_EVERYONE",
+          "MANAGE_ROLES",
         ];
 
         if (role.rawPosition > botRoles.highest.rawPosition) {
@@ -50,9 +50,9 @@ export default class SetupCommand extends SlashCommand {
         }
 
         if (role.permissions.toArray().some((p) => disallowedPermissions.includes(p))) {
-          if (role.permissions.has('ADMINISTRATOR')) {
+          if (role.permissions.has("ADMINISTRATOR")) {
             return int.reply(
-              `The role being applied must not have the \`ADMINISTRATOR\` permission. Remove it and try again.`
+              "The role being applied must not have the `ADMINISTRATOR` permission. Remove it and try again."
             );
           }
 
@@ -61,11 +61,11 @@ export default class SetupCommand extends SlashCommand {
               .toArray()
               .filter((p) => disallowedPermissions.includes(p))
               .map((p) => `\`${p}\``)
-              .join('\n')}\nAre you sure you want to use this role?`,
+              .join("\n")}\nAre you sure you want to use this role?`,
             components: [
               new MessageActionRow().addComponents([
-                new MessageButton().setStyle('SUCCESS').setLabel('Yes').setCustomId('yes'),
-                new MessageButton().setStyle('DANGER').setLabel('No').setCustomId('no'),
+                new MessageButton().setStyle("SUCCESS").setLabel("Yes").setCustomId("yes"),
+                new MessageButton().setStyle("DANGER").setLabel("No").setCustomId("no"),
               ]),
             ],
             fetchReply: true,
@@ -73,13 +73,13 @@ export default class SetupCommand extends SlashCommand {
 
           const collector = reply.createMessageComponentCollector({
             filter: (i) => i.message.id === reply.id && i.user.id === int.user.id,
-            componentType: 'BUTTON',
+            componentType: "BUTTON",
             time: 10000,
           });
 
-          collector.on('collect', async (i) => {
+          collector.on("collect", async (i) => {
             switch (i.customId) {
-              case 'yes': {
+              case "yes": {
                 const req = (
                   await axios.patch(
                     `https://api.safecord.xyz/mongo/guild/${int.guild.id}`,
@@ -88,8 +88,8 @@ export default class SetupCommand extends SlashCommand {
                     },
                     {
                       headers: {
-                        'Content-Type': 'application/json',
-                        authorization: process.env.BACKEND_API_KEY ?? '89aLG9EEsWKgTzZio1ZW',
+                        "Content-Type": "application/json",
+                        authorization: process.env.BACKEND_API_KEY ?? "89aLG9EEsWKgTzZio1ZW",
                       },
                     }
                   )
@@ -103,25 +103,25 @@ export default class SetupCommand extends SlashCommand {
                   });
                 } else {
                   i.update({
-                    content: `An error occurred while setting the verification role.`,
+                    content: "An error occurred while setting the verification role.",
                     components: [],
                   });
                 }
                 break;
               }
-              case 'no': {
+              case "no": {
                 i.update({
-                  content: 'Please re-run the command with another role.',
+                  content: "Please re-run the command with another role.",
                   components: [],
                 });
               }
             }
           });
 
-          collector.on('end', (collected) => {
+          collector.on("end", (collected) => {
             if (collected.size === 0) {
               reply.edit({
-                content: 'Timed out.',
+                content: "Timed out.",
                 components: [],
               });
             }
@@ -138,8 +138,8 @@ export default class SetupCommand extends SlashCommand {
             },
             {
               headers: {
-                'Content-Type': 'application/json',
-                authorization: process.env.BACKEND_API_KEY ?? '89aLG9EEsWKgTzZio1ZW',
+                "Content-Type": "application/json",
+                authorization: process.env.BACKEND_API_KEY ?? "89aLG9EEsWKgTzZio1ZW",
               },
             }
           )

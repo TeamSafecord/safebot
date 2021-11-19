@@ -1,7 +1,7 @@
-import { Client, Collection } from 'discord.js';
-import * as fs from 'fs';
-import path from 'path';
-import SlashCommand from './SlashCommand';
+import { Client, Collection } from "discord.js";
+import * as fs from "fs";
+import path from "path";
+import SlashCommand from "./SlashCommand";
 
 export default class CommandHandler {
   constructor(public client: Client) {}
@@ -26,7 +26,7 @@ export default class CommandHandler {
   }
 
   public setup() {
-    this.client.on('interactionCreate', (i) => {
+    this.client.on("interactionCreate", (i) => {
       if (i.isCommand()) {
         const cmd = this.commands.get(i.commandName);
         if (!cmd) {
