@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-    Run-ESLint:
+  Run-ESLint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
