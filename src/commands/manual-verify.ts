@@ -21,7 +21,7 @@ export default class ManualVerification extends SlashCommand {
 
     const member = i.options.getMember("user", true);
 
-    const guildDoc = await axios.get<{ guild: {verificationRole: string} }>(`http://127.0.0.1:3000/mongo/guilds/${i.guild.id}`, { 
+    const guildDoc = await axios.get<{ guild: {verificationRole: string} }>(`http://api.safecord.xyz/mongo/guilds/${i.guild.id}`, { 
       headers: { "authorization": process.env.BACKEND_API_KEY ?? "89aLG9EEsWKgTzZio1ZW" },
     });
 
