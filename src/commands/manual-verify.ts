@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CommandInteraction, Message } from "discord.js";
+import { CommandInteraction } from "discord.js";
 import SlashCommand from "../SlashCommand";
 
 export default class ManualVerification extends SlashCommand {
@@ -36,7 +36,7 @@ export default class ManualVerification extends SlashCommand {
 
     if (!role) {
       return i.editReply({
-        content: "Looks like you deleted the role.. Why did you think this would work? (Re-run /setup!)",
+        content: "Looks like you deleted the role..(Re-run /setup!)",
       });
     }
 
