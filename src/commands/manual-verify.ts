@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, Message } from "discord.js";
 import SlashCommand from "../SlashCommand";
 
 export default class ManualVerification extends SlashCommand {
@@ -39,6 +39,8 @@ export default class ManualVerification extends SlashCommand {
         content: "Looks like you deleted the role.. Why did you think this would work? (Re-run /setup!)",
       });
     }
+
+    if (!member.roles.cache.has(role.id)) return i.followUp("This user is already verified!");
 
     await member.roles.add(role);
 
