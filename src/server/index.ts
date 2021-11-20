@@ -14,7 +14,7 @@ export async function setupServer(port: number, client: Client): Promise<void> {
 
   server.client = client;
 
-  server.register(fastifyAutoload, {
+  void server.register(fastifyAutoload, {
     dir: path.join(__dirname, "Routes"),
   });
 

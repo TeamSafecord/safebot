@@ -12,8 +12,9 @@ export default class SetupCommand extends SlashCommand {
 
     if (!member) return; // silent return because the utils function handles it
 
-    if (!member.permissions.has("MANAGE_GUILD"))
+    if (!member.permissions.has("MANAGE_GUILD")) {
       return i.reply({ content: "You need the permission `Manage Server` to use this command!", ephemeral: true });
+    }
 
     await i.deferReply({ ephemeral: true });
 

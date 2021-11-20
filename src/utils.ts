@@ -9,11 +9,12 @@ export default class Utils extends null {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     const member = await i.guild.members.fetch(i.user.id).catch(() => {});
 
-    if (!member)
+    if (!member) {
       return i.reply({
         content: "Couldn't fetch this member.. Was I invited properly? Contact `/support`!",
         ephemeral: true,
       });
+    }
 
     return member;
   }

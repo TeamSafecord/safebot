@@ -74,18 +74,14 @@ export default async (fastify: FastifyInstance) => {
       console.log("================");
       console.log("Received Captcha");
       console.log("=======>=======");
-
-      await console.log(
-        // TODO: Remove once I test it actually works
-        member.roles
-          .add(role)
-          .then((member) => {
-            reply.send({ statusCode: 200, member });
-          })
-          .catch((error) => {
-            reply.code(500).send({ statusCode: 500, message: error.message });
-          })
-      );
+      member.roles
+        .add(role)
+        .then((member) => {
+          void reply.send({ statusCode: 200, member });
+        })
+        .catch((error) => {
+          void reply.code(500).send({ statusCode: 500, message: error.message });
+        });
     }
   );
 
@@ -105,8 +101,9 @@ export default async (fastify: FastifyInstance) => {
   });
 
   fastify.post<{ Body: getMemberBody }>("/verified", async (req, res) => {
-    if (!req.body.guild_id || !req.body.member_id)
+    if (!req.body.guild_id || !req.body.member_id) {
       return res.status(400).send({ error: "misisng guild id or member id!" });
+    }
 
     const guild = await fastify.client.guilds.fetch(req.body.guild_id);
     if (!guild) return res.status(404).send({ error: "Could not find guild!" });

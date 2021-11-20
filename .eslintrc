@@ -1,28 +1,36 @@
 {
-  "extends": ["eslint:recommended", "plugin:prettier/recommended", "plugin:@typescript-eslint/recommended"],
-  "plugins": ["prettier", "@typescript-eslint"],
-  "rules": {
-    "eqeqeq": "error",
-    "no-console": "off",
-    "no-undef": "off",
-    "no-unused-vars": "off",
-    "prettier/prettier": "error",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "quotes": ["error", "double"]
-  },
+  "root": true,
   "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
+    "project": "./tsconfig.json"
   },
-  "env": {
-    "browser": true,
-    "node": true,
-    "es6": true,
-    "jest": true
-  },
-  "ignorePatterns": ["node_modules", "build", "dist", "public"]
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "google"
+  ],
+  "rules": {
+    "object-curly-spacing": "off",
+    "quotes": "off",
+    "linebreak-style": "off",
+    "require-jsdoc": "off",
+    "indent": ["error", 2],
+    "max-len": "off",
+    "no-trailing-spaces": "off",
+    "no-unused-vars": "warn",
+    "arrow-parens": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-async-promise-executor": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "new-cap": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "guard-for-in": "off",
+    "@typescript-eslint/no-floating-promises": 2
+  }
 }

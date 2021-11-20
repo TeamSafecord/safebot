@@ -32,7 +32,7 @@ client.on("ready", () => {
 
   cmds = cmd.commands.map((c) => c);
 
-  setupServer(1754, client);
+  void setupServer(1754, client);
 });
 
 client.on("messageCreate", async (m) => {
@@ -63,18 +63,18 @@ client.on("messageCreate", async (m) => {
     }
   }
   if (m.content.endsWith("prod")) {
-    client.application.commands.set(opts);
+    void client.application.commands.set(opts);
 
-    m.reply("Deployed globally!");
+    void m.reply("Deployed globally!");
   } else if (m.content.endsWith("dev")) {
-    m.guild.commands.set(opts);
+    void m.guild.commands.set(opts);
 
-    m.reply("Deployed locally!");
+    void m.reply("Deployed locally!");
   } else if (m.content.endsWith("here")) {
-    m.guild.commands.set(opts);
+    void m.guild.commands.set(opts);
 
-    m.reply("Deployed locally!");
+    void m.reply("Deployed locally!");
   }
 });
 
-client.login();
+void client.login();
