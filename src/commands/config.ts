@@ -82,7 +82,7 @@ export default class SetupCommand extends SlashCommand {
           case "yes": {
             const req = (
               await axios.patch(
-                `https://api.safecord.xyz/mongo/guild/${int.guild.id}`,
+                `https://api.safecord.xyz/mongo/guilds/${int.guild.id}`,
                 {
                   verificationRole: role.id,
                 },
@@ -132,7 +132,7 @@ export default class SetupCommand extends SlashCommand {
 
       const req = (
         await axios.patch(
-          `https://api.safecord.xyz/mongo/guild/${int.guild.id}`,
+          `https://api.safecord.xyz/mongo/guilds/${int.guild.id}`,
           {
             verificationRole: role.id,
           },
